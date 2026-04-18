@@ -2,11 +2,11 @@ package org.example;
 
 public class Book {
     //put in your properties, constructor, getters/setters
-    private int id;
-    private String isbn;
-    private String title;
-    private boolean isCheckedOut;
-    private String checkedOutTo;
+    public int id;
+    public String isbn;
+    public  String title;
+    public boolean isCheckedOut;
+    public String checkedOutTo;
 
     //constructor
     public Book(int id, String isbn, String title,boolean isCheckedOut, String checkedOutTo){
@@ -23,5 +23,12 @@ public class Book {
     }
 
     public void checkIn() {
+    }
+
+    @Override
+    public String toString(){
+        return"ID: " + id + " ISBN: " + isbn +
+                " | Title: " + title + " | Checkout: " + isCheckedOut +
+                " | Checked out to:  " + checkedOutTo;
     }
 }

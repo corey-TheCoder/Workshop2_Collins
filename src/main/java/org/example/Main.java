@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         //You will only need ONE scanner
-        Scanner device = new Scanner(System.in);
+        Scanner reader = new Scanner(System.in);
 
         // Create 20 Book objects manually in an array
         //Or have ChatGPT help you
@@ -45,17 +45,56 @@ public class Main {
             System.out.println("3. Exit");
             System.out.print("Enter your choice: ");
 
-            int userInput = device.nextInt();
+            int userInput = reader.nextInt();
+            reader.nextLine();
+
+            //variables
+
 
             //Now use if statements depending on what the person typed
             //How many possibilities are there? Write your if statement structure first
+
+            //if choice of AVAILABLE BOOKS
             if (userInput == 1){
+                //looping through books
+                //read that using this is more practical for reading through an array unless searching for indexed specific then
+                // i should use the default FOR LOOP if acquiring index??
+                for (Book book : books) {
+                    //printing books when they are not chekckout
+                    if (book.isCheckedOut == false) {
+                        System.out.println(book);//need a way to check if books is checked out
+                    }
+                }
+                    //prompt the user to check out a book
+                System.out.println("Would you like to checkout a book? (Y)es or (N)o?");
+                String checkOut = reader.nextLine().toUpperCase();
+                if (checkOut.equals("Y")){
+                    //ask for book
+                    System.out.println("enter the book ID from the list above");
+                    int bookID = reader.nextInt();
+                    reader.nextLine();
+                    //ask for name
+                    System.out.println("Sure that's great! What is your name?");
+                    String name = reader.nextLine();
+                    //loop through books again
+                    for (Book book : books){
+                        // if the book id matches another book && is available. check out book and assign name
+                        if(book.id == bookID && !book.isCheckedOut){
+                            book.isCheckedOut = true;
+                            book.checkedOutTo = name;
+                            System.out.println("Book with ID number " + bookID + " is now rented to " + name);
+
+                        }
+                    }
+                }
+
+
 
             } else if(userInput == 2){
+                //show checked out books
 
-            } else if(userInput == 3){
-
-            }else{
+            } else {
+                System.exit(0);
                 System.out.println("User incorrect input");
             }
 
@@ -66,7 +105,7 @@ public class Main {
 
             //How do we exit the program?
             //This command kills the program at whatever point its at.
-            System.exit(0);
+
         }
 
     }
