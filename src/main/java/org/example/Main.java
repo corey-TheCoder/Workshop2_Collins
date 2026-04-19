@@ -5,7 +5,7 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //You will only need ONE scanner
+        //SCANNER: reader<-
         Scanner reader = new Scanner(System.in);
 
         // Create 20 Book objects manually in an array
@@ -33,58 +33,59 @@ public class Main {
                 new Book(20, "978-0020", "Cloud Computing", false, "")
         };
 
-        //This while loop runs forever
-        //That means the program will run until we tell it to stop.
         while (true) {
-            //Show a menu to the user
-            //Use the scanner to take in the user input
-            //For example
             System.out.println("\n=== BOOK STORE HOME SCREEN ===");
             System.out.println("1. Show Available Books");
             System.out.println("2. Show Checked Out Books");
             System.out.println("3. Exit");
             System.out.print("Enter your choice: ");
 
+            //user input for menu
             int userInput = reader.nextInt();
-            reader.nextLine();
-
-            //variables
-
-
-            //Now use if statements depending on what the person typed
-            //How many possibilities are there? Write your if statement structure first
+            reader.nextLine();// clearing
 
             //if choice of AVAILABLE BOOKS
             if (userInput == 1){
+
                 //looping through books
-                //read that using this is more practical for reading through an array unless searching for indexed specific then
-                // i should use the default FOR LOOP if acquiring index??
                 for (Book book : books) {
-                    //printing books when they are not chekckout
-                    if (book.isCheckedOut == false) {
-                        System.out.println(book);//need a way to check if books is checked out
+                    //printing books when they are not checkout "simplify"
+                    if (!book.isCheckedOut()) {
+                        //ID ISBN AND TITLE
+                        System.out.println("Book ID: " + book.getId() + " | ISBN: " + book.getIsbn() + " | Title: " +  book.getTitle());//need a way to check if books is checked out
                     }
                 }
+
                     //prompt the user to check out a book
                 System.out.println("Would you like to checkout a book? (Y)es or (N)o?");
                 String checkOut = reader.nextLine().toUpperCase();
-                if (checkOut.equals("Y")){
+
+
+                while (checkOut.equals("Y")){
                     //ask for book
-                    System.out.println("enter the book ID from the list above");
+                    System.out.println("Enter the book ID from the list above");
                     int bookID = reader.nextInt();
                     reader.nextLine();
                     //ask for name
                     System.out.println("Sure that's great! What is your name?");
                     String name = reader.nextLine();
+
                     //loop through books again
+                    //variable to see if found DEFENSIVE
+                    boolean available = false;
                     for (Book book : books){
                         // if the book id matches another book && is available. check out book and assign name
-                        if(book.id == bookID && !book.isCheckedOut){
-                            book.isCheckedOut = true;
-                            book.checkedOutTo = name;
+                        if(book.getId() == bookID && !book.isCheckedOut()){
+                            //calling and changing checkout status to a name
+                            book.checkOut(name);
                             System.out.println("Book with ID number " + bookID + " is now rented to " + name);
-
+                            available =true;
+                            break;
                         }
+                    }
+                    if (!available){
+                        System.out.println("Sorry.. either we do not have this book" +
+                                " or it is currently checked out to another guest.");
                     }
                 }
 
@@ -92,6 +93,42 @@ public class Main {
 
             } else if(userInput == 2){
                 //show checked out books
+                for (Book book : books) {
+                    if (book.isCheckedOut()) {
+                        //ID ISBN TITLE NAME
+                        System.out.println("Book Id: " + book.getId() + " | ISBN: " + book.getIsbn() + " | Title: " +
+                                book.getTitle() + " | Checkout to: " + book.getCheckedOutTo());
+                    }
+                }
+
+                    System.out.println("Would you like to check in a book? ( Y or N)");
+                    String checkInBook = reader.nextLine().toUpperCase();
+
+                    if (checkInBook.equals("Y")){
+                        System.out.println("What is the book ID number?");
+                        int checkInID = reader.nextInt();
+                        reader.nextLine();
+
+                        //variable
+                        boolean found = false;
+                        for (Book book : books){
+                            // if there is an id that matches the input and is checkout
+                            if (book.getId() == checkInID && book.isCheckedOut()) {
+                                book.checkIn();
+                                System.out.println(book.getTitle() + " has been returned!");
+                                found = true;
+                                break;
+                            }
+
+                        }
+                        if (!found)
+                            System.out.println("Sorry we did not recognize that entry...");
+                    }else{
+                        break;
+                    }
+
+
+
 
             } else {
                 System.exit(0);
